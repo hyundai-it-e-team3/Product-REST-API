@@ -18,6 +18,7 @@ import com.mycompany.productAPI.dto.ProductDetailDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ProductService {
 	
@@ -34,6 +35,9 @@ public class ProductService {
 	private ProductImgDAO productImgDAO;
 	
 	public ProductDTO getProduct(String productId) {
+		
+		productDAO.updateHitCount(productId);
+		
 		ProductDTO productDTO = productDAO.selectByProductId(productId);
 		List<ProductDetailDTO> list = productDetailDAO.selectAllByProductId(productId);
 		
@@ -49,6 +53,7 @@ public class ProductService {
 			productDTO.getColorList().add(productDetail.getColorCode());
 			productDTO.getColorChipList().add(productDetail.getColorChip());
 		}
+		
 		return productDTO;
 	}
 
@@ -64,6 +69,15 @@ public class ProductService {
 		
 		return productDAO.selectProductListByBrandName(mp);
 	
+	}
+
+	public int getRowCountByCategory(String categoryId) {	
+		return productDAO.selectCountByCategoryId(categoryId);
+	}
+
+	public List<ProductDTO> getCategoryProductList(String categoryId, int startRow, int endRow) {
+		log.info(categoryId+" "+startRow+" "+endRow);
+		return productDAO.selectProductListByCategoryId(categoryId,startRow,endRow);
 	}
 
 }

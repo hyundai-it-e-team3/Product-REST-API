@@ -7,18 +7,38 @@
 		FROM product
 		WHERE product_id = #{productId} and status = '1'
 	</select>
+	
 	<select id="selectCountByBrandName" parameterType="string" resultType="int">
 		SELECT count(*)
 		FROM product
 		WHERE brand_name = #{brandName} and status = '1' 
 	</select>
+	<select id="selectCountByCategoryId" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM product a, product_category b
+		WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' 
+	</select>
+	
 	<select id="selectProductListByBrandName" parameterType="map" resultType="product">
 		<![CDATA[
-			SELECT rownum, a.* from (SELECT *
+			SELECT * FROM (SELECT rownum rn, a.* from (SELECT *
 			FROM product
-			WHERE brand_name = #{brandName} and status = '1' order by reg_date) a WHERE rownum >= #{startRow} and rownum <= #{endRow}
+			WHERE brand_name = #{brandName} and status = '1' order by reg_date) a ) b where b.rn>= {#startRow} and b.rn<= #{endRow}
 		]]>
 	</select>
+	
+	<select id="selectProductListByCategoryId" parameterType="map" resultType="product">
+		<![CDATA[
+			SELECT * FROM (SELECT rownum rn , c.* from (SELECT a.*
+			FROM product a , product_category b
+			WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' order by reg_date) c ) d where d.rn>= #{startRow} and d.rn<=#{endRow}
+		]]>
+	</select>
+	
+	
+	<update id="updateHitCount" parameterType="string">
+		UPDATE product SET hit_count =  hit_count + 1 WHERE product_id = #{productId}
+	</update>
 </mapper>
 
 

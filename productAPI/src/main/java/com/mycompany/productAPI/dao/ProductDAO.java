@@ -15,7 +15,15 @@ public interface ProductDAO {
 	public int selectAllProductByBrandName(String brandName);
 
 	public int selectCountByBrandName(String brandName);
+	
+	public int selectCountByCategoryId(String categoryId);
 
 	public List<ProductDTO> selectProductListByBrandName(Map<String, Object> mp);
+
+	public List<ProductDTO> selectProductListByCategoryId(String categoryId, int startRow, int endRow);
+
+	public int updateHitCount(String productId);
+
+	
 
 }
