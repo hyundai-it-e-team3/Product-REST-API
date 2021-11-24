@@ -1,7 +1,9 @@
 package com.mycompany.productAPI.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -48,6 +50,20 @@ public class ProductService {
 			productDTO.getColorChipList().add(productDetail.getColorChip());
 		}
 		return productDTO;
+	}
+
+	public int getRowCount(String brandName) {
+		return productDAO.selectCountByBrandName(brandName);
+	}
+
+	public List<ProductDTO> getBrandProductList(String brandName, int startRow, int endRow) {
+		Map<String,Object> mp = new HashMap<>();
+		mp.put("brandName",brandName);
+		mp.put("startRow",startRow);
+		mp.put("endRow",endRow);
+		
+		return productDAO.selectProductListByBrandName(mp);
+	
 	}
 
 }
