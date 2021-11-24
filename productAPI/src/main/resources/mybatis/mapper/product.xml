@@ -5,7 +5,19 @@
 	<select id="selectByProductId" parameterType="string" resultType="product">
 		SELECT *
 		FROM product
-		WHERE product_id = #{productId} 
+		WHERE product_id = #{productId} and status = '1'
+	</select>
+	<select id="selectCountByBrandName" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM product
+		WHERE brand_name = #{brandName} and status = '1' 
+	</select>
+	<select id="selectProductListByBrandName" parameterType="map" resultType="product">
+		<![CDATA[
+			SELECT rownum, a.* from (SELECT *
+			FROM product
+			WHERE brand_name = #{brandName} and status = '1' order by reg_date) a WHERE rownum >= #{startRow} and rownum <= #{endRow}
+		]]>
 	</select>
 </mapper>
 
