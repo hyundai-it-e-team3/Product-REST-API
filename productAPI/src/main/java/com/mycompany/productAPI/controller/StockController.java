@@ -33,14 +33,12 @@ public class StockController {
 		return stockService.getStock(stockDTO);
 	}
 	
-	//POST: stock/CM2B0WSC561W_TN/64
-	@PostMapping("/{productDetailId}/{psize}")
-	public Map<String,String> updateStock(@PathVariable("productDetailId") String productDetailId, @PathVariable("psize") String psize) {
-		StockDTO stockDTO = new StockDTO();
-		stockDTO.setProductDetailId(productDetailId);
-		stockDTO.setPsize(psize);
-		
-		String result = stockService.updateStock(stockDTO);
+	//POST: stock/plus
+	//requestBody => StockDTO
+	@PostMapping("/{type}")
+	public Map<String,String> updateStock(@PathVariable String type,StockDTO stockDTO) {
+
+		String result = stockService.updateStock(stockDTO,type);
 		Map<String, String> mp = new HashMap<>();
 		
 		mp.put("result",result);
