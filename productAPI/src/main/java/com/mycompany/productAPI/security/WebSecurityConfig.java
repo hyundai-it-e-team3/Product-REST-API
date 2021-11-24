@@ -29,8 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Resource
 	private DataSource dataSource;
 	
-	@Resource
-	private CustomUserDetailsService customUserDetailsService;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {	
@@ -62,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		log.info("configure(AuthenticationManagerBuilder auth) 실행");
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		provider.setUserDetailsService(customUserDetailsService);
+		//provider.setUserDetailsService(customUserDetailsService);
 		provider.setPasswordEncoder(passwordEncoder());
 		auth.authenticationProvider(provider);
 	}	
