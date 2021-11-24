@@ -8,6 +8,14 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 	<typeAliases>
-
+		<typeAlias type="com.mycompany.productAPI.dto.BrandCategoryDTO" alias="brandCategory"/>
+		<typeAlias type="com.mycompany.productAPI.dto.BrandDTO" alias="brand"/>
+		<typeAlias type="com.mycompany.productAPI.dto.BrandMainProductDTO" alias="brandMainProduct"/>
+		<typeAlias type="com.mycompany.productAPI.dto.CategoryDTO" alias="category"/>
+		<typeAlias type="com.mycompany.productAPI.dto.ProductCategoryDTO" alias="productCategory"/>
+		<typeAlias type="com.mycompany.productAPI.dto.ProductDetailDTO" alias="productDetail"/>
+		<typeAlias type="com.mycompany.productAPI.dto.ProductDTO" alias="product"/>
+		<typeAlias type="com.mycompany.productAPI.dto.ProductImgDTO" alias="productImg"/>
+		<typeAlias type="com.mycompany.productAPI.dto.StockDTO" alias="stock"/>
 	</typeAliases>
 </configuration>
