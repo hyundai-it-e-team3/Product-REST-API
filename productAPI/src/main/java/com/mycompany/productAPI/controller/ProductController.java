@@ -1,7 +1,6 @@
 package com.mycompany.productAPI.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -27,7 +26,7 @@ public class ProductController {
 		return productService.getProduct(productId);
 	}
 	
-	@RequestMapping("brandProductList/{brandName}/{startRow}/{rowCount}")
+	@RequestMapping("/brandProductList/{brandName}/{startRow}/{rowCount}")
 	public List<ProductDTO> getBrandProductList(@PathVariable("brandName") String brandName,@PathVariable("startRow") int startRow,@PathVariable("rowCount") int rowCount){
 		int totalRows = productService.getRowCount(brandName);
 		int endRow = startRow+rowCount;
@@ -36,5 +35,16 @@ public class ProductController {
 		}
 		
 		return productService.getBrandProductList(brandName,startRow,endRow);  
+	}
+	
+	@RequestMapping("/list/{categoryId}/{startRow}/{rowCount}")
+	public List<ProductDTO> getCategoryProductList(@PathVariable("categoryId") String categoryId,@PathVariable("startRow") int startRow,@PathVariable("rowCount") int rowCount){
+		int totalRows = productService.getRowCountByCategory(categoryId);
+		log.info(" "+totalRows);
+		int endRow = startRow+rowCount;
+		if(endRow>totalRows) {
+			endRow = totalRows;
+		}
+		return productService.getCategoryProductList(categoryId,startRow,endRow);
 	}
 }
