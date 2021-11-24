@@ -15,8 +15,12 @@
 	</select>
 	
 	
-	<update id="updateByStockDTO" parameterType="stock">
-		UPDATE stock SET amount = amount - 1 WHERE product_detail_id = #{productDetailId} and psize = #{psize}
+	<update id="updateMinusByStockDTO" parameterType="stock">
+		UPDATE stock SET amount = amount - #{amount} WHERE product_detail_id = #{productDetailId} and psize = #{psize}
+	</update>	
+	
+	<update id="updatePlusByStockDTO" parameterType="stock">
+		UPDATE stock SET amount = amount + #{amount} WHERE product_detail_id = #{productDetailId} and psize = #{psize}
 	</update>	
 </mapper>
 

@@ -22,21 +22,26 @@ public class StockService {
 		return stockDAO.selectByStockDTO(stockDTO);
 	}
 
-	public String updateStock(StockDTO stockDTO) {
+	public String updateStock(StockDTO stockDTO,String type) {
 		log.info("실행");
 		log.info(stockDTO.toString());
 		
-		StockDTO stk = stockDAO.selectByStockDTO(stockDTO);
-		
-		if(stk ==null) {
-			return "error";
+		if(type.equals("plus")) {
+			int result = stockDAO.updatePlusByStockDTO(stockDTO);
+			return "success";
 		}else {
-			int result = stockDAO.updateByStockDTO(stockDTO);
-			if(result==0) {
-				return "not enought stock";
+			StockDTO stk = stockDAO.selectByStockDTO(stockDTO);
+			
+			if(stk ==null) {
+				return "error";
 			}else {
-				return "success";
-			}
+				int result = stockDAO.updateMinusByStockDTO(stockDTO);
+				if(result==0) {
+					return "not enought stock";
+				}else {
+					return "success";
+				}
+			}			
 		}
 	}
 }

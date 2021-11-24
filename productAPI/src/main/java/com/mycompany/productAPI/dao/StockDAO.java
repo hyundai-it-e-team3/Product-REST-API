@@ -10,6 +10,6 @@ import com.mycompany.productAPI.dto.StockDTO;
 public interface StockDAO {
 	public StockDTO selectByStockDTO(StockDTO stockDTO);
 	public List<StockDTO> selectByProductDetailId(String productDetailId);
-	public int updateByStockDTO(StockDTO stockDTO);
-	
+	public int updatePlusByStockDTO(StockDTO stockDTO);
+	public int updateMinusByStockDTO(StockDTO stockDTO);
 }
