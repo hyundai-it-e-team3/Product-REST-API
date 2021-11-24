@@ -1,6 +1,7 @@
 package com.mycompany.productAPI.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -14,4 +15,7 @@ public class ProductDTO {
 	private int status;
 	private Date regDate;
 	private String brandName;
+	private List<String> colorList;
+	private List<String> colorChipList;
+	private ProductDetailDTO productDetail;
 }
