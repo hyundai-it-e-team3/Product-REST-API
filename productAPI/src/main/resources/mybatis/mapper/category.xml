@@ -5,7 +5,19 @@
 	<select id="selectAllMain" resultType="category">
 		SELECT *
 		FROM category
-		WHERE clevel = 1
+		WHERE clevel = 1 order by category_id
+	</select>
+
+	<select id="selectAllMiddle" resultType="category">
+		SELECT *
+		FROM category
+		WHERE clevel = 2 order by category_id
+	</select>
+	
+	<select id="selectAllSub" resultType="category">
+		SELECT *
+		FROM category
+		WHERE clevel = 3 order by category_id
 	</select>
 	
 	<select id="selectMiddleCategoryById" resultType="category">

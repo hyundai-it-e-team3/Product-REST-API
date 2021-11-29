@@ -19,11 +19,17 @@
 		WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' 
 	</select>
 	
+	<select id="selectAllCount" resultType="int">
+		SELECT count(*)
+		FROM product
+		WHERE status = '1' 
+	</select>
+	
 	<select id="selectProductListByBrandName" parameterType="map" resultType="product">
 		<![CDATA[
 			SELECT * FROM (SELECT rownum rn, a.* from (SELECT *
 			FROM product
-			WHERE brand_name = #{brandName} and status = '1' order by reg_date) a ) b where b.rn>= {#startRow} and b.rn<= #{endRow}
+			WHERE brand_name = #{brandName} and status = '1' order by reg_date, product_id) a ) b where b.rn>= #{startRow} and b.rn<= #{endRow}
 		]]>
 	</select>
 	
@@ -31,10 +37,16 @@
 		<![CDATA[
 			SELECT * FROM (SELECT rownum rn , c.* from (SELECT a.*
 			FROM product a , product_category b
-			WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' order by reg_date) c ) d where d.rn>= #{startRow} and d.rn<=#{endRow}
+			WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' order by ${sortId} ${sortWay} , a.product_id) c ) d where d.rn>= #{startRow} and d.rn<=#{endRow}
 		]]>
 	</select>
 	
+	<select id="selectAllProductList" parameterType="map" resultType="product">
+		<![CDATA[
+			SELECT * FROM (SELECT rownum rn , c.* from (SELECT *
+			FROM product order by reg_date , product_id) c)d where d.rn>= #{startRow} and d.rn<=#{endRow} 
+		]]>
+	</select>
 	
 	<update id="updateHitCount" parameterType="string">
 		UPDATE product SET hit_count =  hit_count + 1 WHERE product_id = #{productId}

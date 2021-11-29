@@ -15,7 +15,6 @@ public class ProductDTO {
 	private int status;
 	private Date regDate;
 	private String brandName;
-	private List<String> colorList;
-	private List<String> colorChipList;
-	private ProductDetailDTO productDetail;
+	private String thumbnail;
+	private List<ProductDetailDTO> productDetailList;
 }

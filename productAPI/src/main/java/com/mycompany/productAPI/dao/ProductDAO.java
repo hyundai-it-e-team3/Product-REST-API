@@ -17,13 +17,18 @@ public interface ProductDAO {
 	public int selectCountByBrandName(String brandName);
 	
 	public int selectCountByCategoryId(String categoryId);
+	
+	public int selectAllCount();
+	
+	
 
 	public List<ProductDTO> selectProductListByBrandName(Map<String, Object> mp);
 
-	public List<ProductDTO> selectProductListByCategoryId(String categoryId, int startRow, int endRow);
+	public List<ProductDTO> selectAllProductList(Map<String, Object> mp);
+	
+	public List<ProductDTO> selectProductListByCategoryId(Map<String, Object> mp);
 
 	public int updateHitCount(String productId);
 
-	
 
 }

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mycompany.productAPI.dto.BrandCategoryDTO;
+import com.mycompany.productAPI.dto.BrandCategoryTempDTO;
 import com.mycompany.productAPI.dto.CategoryDTO;
 import com.mycompany.productAPI.service.CategoryService;
 
@@ -23,8 +25,14 @@ public class CategoryController {
 	
 	@RequestMapping("")
 	public List<CategoryDTO> getAllCategory() {
-		return categoryService.getMainCategory();
+		return categoryService.getCategory();
 	}
+	
+	@RequestMapping("/brand")
+	public List<BrandCategoryDTO> getAllBrandCategory() {
+		return categoryService.getBrandCategory();
+	}
+	
 	
 	@RequestMapping("/{mainCategoryId}")
 	public List<CategoryDTO> getMiddleCategory(@PathVariable String mainCategoryId){

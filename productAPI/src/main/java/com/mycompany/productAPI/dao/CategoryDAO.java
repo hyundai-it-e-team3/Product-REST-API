@@ -10,9 +10,16 @@ import com.mycompany.productAPI.dto.CategoryDTO;
 public interface CategoryDAO {
 
 	public List<CategoryDTO> selectAllMain();
+	
+	public List<CategoryDTO> selectAllMiddle();
+	
+	public List<CategoryDTO> selectAllSub();
 
-	public List<CategoryDTO> selectMiddleCategoryById(String mainCategoryId);
+	public List<CategoryDTO> selecMiddleCategoryById(String mainCategoryId);
 
 	public List<CategoryDTO> selectSubCategory(String parentCategoryId);
+
+	public List<CategoryDTO> selectAllCategory();
+
 
 }

@@ -39,21 +39,14 @@ public class ProductService {
 		productDAO.updateHitCount(productId);
 		
 		ProductDTO productDTO = productDAO.selectByProductId(productId);
-		List<ProductDetailDTO> list = productDetailDAO.selectAllByProductId(productId);
+		log.info(productId);
+		productDTO.setProductDetailList(productDetailDAO.selectAllByProductId(productId));
 		
-		ProductDetailDTO productDetailDTO = list.get(0);
-		productDetailDTO.setStockList(stockDAO.selectByProductDetailId(productDetailDTO.getProductDetailId()));
-		productDetailDTO.setImgList(productImgDAO.selectByProductDetailId(productDetailDTO.getProductDetailId()));
-		
-		productDTO.setColorList(new ArrayList<>());
-		productDTO.setColorChipList(new ArrayList<>());
-		productDTO.setProductDetail(productDetailDTO);
-		
-		for(ProductDetailDTO productDetail : list) {
-			productDTO.getColorList().add(productDetail.getColorCode());
-			productDTO.getColorChipList().add(productDetail.getColorChip());
-		}
-		
+		for(ProductDetailDTO productDetail: productDTO.getProductDetailList()) {
+			productDetail.setStockList(stockDAO.selectByProductDetailId(productDetail.getProductDetailId()));
+			productDetail.setImgList(productImgDAO.selectByProductDetailId(productDetail.getProductDetailId()));
+			productDetail.setWithImgList(productImgDAO.selectByProductDetailId(productDetail.getWithProduct()));
+		}		
 		return productDTO;
 	}
 
@@ -61,23 +54,56 @@ public class ProductService {
 		return productDAO.selectCountByBrandName(brandName);
 	}
 
-	public List<ProductDTO> getBrandProductList(String brandName, int startRow, int endRow) {
+	public List<ProductDTO> getBrandProductList(String brandName, int startRow, int endRow, int sortId) {
 		Map<String,Object> mp = new HashMap<>();
 		mp.put("brandName",brandName);
 		mp.put("startRow",startRow);
 		mp.put("endRow",endRow);
 		
+		if(sortId==0) {
+			mp.put("sortId","reg_date");
+			mp.put("sortWay","asc");
+		}else if(sortId==1){
+			mp.put("sortId","price");
+			mp.put("sortWay","asc");
+		}else if(sortId==2){
+			mp.put("sortId","price");
+			mp.put("sortWay","desc");
+		}
 		return productDAO.selectProductListByBrandName(mp);
 	
 	}
 
 	public int getRowCountByCategory(String categoryId) {	
+		if(categoryId.equals("0"))
+			return productDAO.selectAllCount();
 		return productDAO.selectCountByCategoryId(categoryId);
 	}
 
-	public List<ProductDTO> getCategoryProductList(String categoryId, int startRow, int endRow) {
-		log.info(categoryId+" "+startRow+" "+endRow);
-		return productDAO.selectProductListByCategoryId(categoryId,startRow,endRow);
+	public List<ProductDTO> getCategoryProductList(String categoryId, int startRow, int endRow, int sortId) {
+		
+		Map<String,Object> mp = new HashMap<>();
+		
+		mp.put("categoryId",categoryId);
+		mp.put("startRow",startRow);
+		mp.put("endRow",endRow);
+		
+		if(sortId==0) {
+			mp.put("sortId","reg_date");
+			mp.put("sortWay","desc");
+		}else if(sortId==1){
+			mp.put("sortId","price");
+			mp.put("sortWay","asc");
+		}else if(sortId==2){
+			mp.put("sortId","price");
+			mp.put("sortWay","desc");
+		}
+		
+		
+		log.info(categoryId+" "+startRow+" "+endRow+" "+sortId);
+		if(categoryId.equals("0"))
+			return productDAO.selectAllProductList(mp);
+		return productDAO.selectProductListByCategoryId(mp);
 	}
 
 }

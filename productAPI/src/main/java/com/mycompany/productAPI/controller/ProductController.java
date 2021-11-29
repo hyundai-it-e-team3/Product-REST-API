@@ -26,25 +26,29 @@ public class ProductController {
 		return productService.getProduct(productId);
 	}
 	
-	@RequestMapping("/brandProductList/{brandName}/{startRow}/{rowCount}")
-	public List<ProductDTO> getBrandProductList(@PathVariable("brandName") String brandName,@PathVariable("startRow") int startRow,@PathVariable("rowCount") int rowCount){
+	@RequestMapping("/brandProductList/{brandName}/{startRow}/{rowCount}/{sortId}")
+	public List<ProductDTO> getBrandProductList(@PathVariable("brandName") String brandName,@PathVariable("startRow") int startRow,@PathVariable("rowCount") int rowCount,@PathVariable("sortId") int sortId){
 		int totalRows = productService.getRowCount(brandName);
 		int endRow = startRow+rowCount;
 		if(endRow>totalRows) {
 			endRow = totalRows;
 		}
 		
-		return productService.getBrandProductList(brandName,startRow,endRow);  
+		return productService.getBrandProductList(brandName,startRow,endRow,sortId);  
 	}
 	
-	@RequestMapping("/list/{categoryId}/{startRow}/{rowCount}")
-	public List<ProductDTO> getCategoryProductList(@PathVariable("categoryId") String categoryId,@PathVariable("startRow") int startRow,@PathVariable("rowCount") int rowCount){
+	@RequestMapping("/list/{categoryId}/{startRow}/{rowCount}/{sortId}")
+	public List<ProductDTO> getCategoryProductList(@PathVariable("categoryId") String categoryId,@PathVariable("startRow") int startRow,@PathVariable("rowCount") int rowCount,@PathVariable("sortId") int sortId){
 		int totalRows = productService.getRowCountByCategory(categoryId);
 		log.info(" "+totalRows);
 		int endRow = startRow+rowCount;
 		if(endRow>totalRows) {
 			endRow = totalRows;
 		}
-		return productService.getCategoryProductList(categoryId,startRow,endRow);
+		List <ProductDTO> list = productService.getCategoryProductList(categoryId,startRow,endRow, sortId);
+		for(ProductDTO product : list) {
+			log.info(product.getProductId());
+		}
+		return list;
 	}
 }

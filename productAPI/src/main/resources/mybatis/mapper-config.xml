@@ -9,6 +9,7 @@
 	</settings>
 	<typeAliases>
 		<typeAlias type="com.mycompany.productAPI.dto.BrandCategoryDTO" alias="brandCategory"/>
+		<typeAlias type="com.mycompany.productAPI.dto.BrandCategoryTempDTO" alias="brandCategoryTemp"/>
 		<typeAlias type="com.mycompany.productAPI.dto.BrandDTO" alias="brand"/>
 		<typeAlias type="com.mycompany.productAPI.dto.BrandMainProductDTO" alias="brandMainProduct"/>
 		<typeAlias type="com.mycompany.productAPI.dto.CategoryDTO" alias="category"/>
