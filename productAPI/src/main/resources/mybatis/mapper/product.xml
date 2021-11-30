@@ -10,8 +10,8 @@
 	
 	<select id="selectCountByBrandName" parameterType="string" resultType="int">
 		SELECT count(*)
-		FROM product
-		WHERE brand_name = #{brandName} and status = '1' 
+		FROM product a, product_category b
+		WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and brand_name = #{brandName} and status = '1' 
 	</select>
 	<select id="selectCountByCategoryId" parameterType="string" resultType="int">
 		SELECT count(*)
@@ -27,9 +27,17 @@
 	
 	<select id="selectProductListByBrandName" parameterType="map" resultType="product">
 		<![CDATA[
-			SELECT * FROM (SELECT rownum rn, a.* from (SELECT *
-			FROM product
-			WHERE brand_name = #{brandName} and status = '1' order by reg_date, product_id) a ) b where b.rn>= #{startRow} and b.rn<= #{endRow}
+			SELECT * FROM (SELECT rownum rn , c.* from (SELECT a.*
+			FROM product a , product_category b
+			WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' and brand_name = #{brandName} order by ${sortId} ${sortWay} , a.product_id) c ) d where d.rn>= #{startRow} and d.rn<=#{endRow}
+		]]>
+	</select>
+	
+	<select id="selectProductListByBrandNameAndCategory" parameterType="map" resultType="product">
+		<![CDATA[
+			SELECT * FROM (SELECT rownum rn , c.* from (SELECT a.*
+			FROM product a , product_category b
+			WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' and brand_name = #{brandName} order by ${sortId} ${sortWay} , a.product_id) c ) d where d.rn>= #{startRow} and d.rn<=#{endRow}
 		]]>
 	</select>
 	
@@ -44,7 +52,7 @@
 	<select id="selectAllProductList" parameterType="map" resultType="product">
 		<![CDATA[
 			SELECT * FROM (SELECT rownum rn , c.* from (SELECT *
-			FROM product order by reg_date , product_id) c)d where d.rn>= #{startRow} and d.rn<=#{endRow} 
+			FROM product order by ${sortId} ${sortWay} , product_id) c)d where d.rn>= #{startRow} and d.rn<=#{endRow} 
 		]]>
 	</select>
 	
