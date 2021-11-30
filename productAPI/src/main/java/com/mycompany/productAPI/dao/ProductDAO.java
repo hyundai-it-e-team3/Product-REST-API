@@ -14,7 +14,7 @@ public interface ProductDAO {
 
 	public int selectAllProductByBrandName(String brandName);
 
-	public int selectCountByBrandName(String brandName);
+	public int selectCountByBrandName(Map<String,String> map);
 	
 	public int selectCountByCategoryId(String categoryId);
 	

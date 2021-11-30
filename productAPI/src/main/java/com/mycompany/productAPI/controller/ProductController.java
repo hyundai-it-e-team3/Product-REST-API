@@ -26,15 +26,17 @@ public class ProductController {
 		return productService.getProduct(productId);
 	}
 	
-	@RequestMapping("/brandProductList/{brandName}/{startRow}/{rowCount}/{sortId}")
-	public List<ProductDTO> getBrandProductList(@PathVariable("brandName") String brandName,@PathVariable("startRow") int startRow,@PathVariable("rowCount") int rowCount,@PathVariable("sortId") int sortId){
-		int totalRows = productService.getRowCount(brandName);
+	@RequestMapping("/brandProductList/{brandName}/{categoryId}/{startRow}/{rowCount}/{sortId}")
+	public List<ProductDTO> getBrandProductList(@PathVariable("brandName") String brandName,@PathVariable("startRow") int startRow,@PathVariable("rowCount") int rowCount,@PathVariable("sortId") int sortId,@PathVariable("categoryId") String categoryId){
+		if(categoryId.equals("null"))
+			categoryId = "";
+		int totalRows = productService.getRowCount(brandName,categoryId);
 		int endRow = startRow+rowCount;
 		if(endRow>totalRows) {
 			endRow = totalRows;
 		}
 		
-		return productService.getBrandProductList(brandName,startRow,endRow,sortId);  
+		return productService.getBrandProductList(brandName,categoryId,startRow,endRow,sortId);  
 	}
 	
 	@RequestMapping("/list/{categoryId}/{startRow}/{rowCount}/{sortId}")

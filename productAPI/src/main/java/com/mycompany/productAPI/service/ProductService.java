@@ -50,15 +50,19 @@ public class ProductService {
 		return productDTO;
 	}
 
-	public int getRowCount(String brandName) {
-		return productDAO.selectCountByBrandName(brandName);
+	public int getRowCount(String brandName, String categoryId) {
+		Map<String,String> mp = new HashMap<>();
+		mp.put("brandName",brandName);
+		mp.put("categoryId",categoryId);
+		return productDAO.selectCountByBrandName(mp);
 	}
 
-	public List<ProductDTO> getBrandProductList(String brandName, int startRow, int endRow, int sortId) {
+	public List<ProductDTO> getBrandProductList(String brandName,String categoryId ,int startRow, int endRow, int sortId) {
 		Map<String,Object> mp = new HashMap<>();
 		mp.put("brandName",brandName);
 		mp.put("startRow",startRow);
 		mp.put("endRow",endRow);
+		mp.put("categoryId",categoryId);
 		
 		if(sortId==0) {
 			mp.put("sortId","reg_date");
