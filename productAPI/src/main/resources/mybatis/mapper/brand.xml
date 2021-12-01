@@ -3,7 +3,7 @@
 
 <mapper namespace="com.mycompany.productAPI.dao.BrandDAO">
 	<select id="selectAllBrand" resultType="brandCategory">
-		SELECT brand_name 
+		SELECT main_img,brand_name 
 		FROM brand 
 		order by brand_name
 	</select>	

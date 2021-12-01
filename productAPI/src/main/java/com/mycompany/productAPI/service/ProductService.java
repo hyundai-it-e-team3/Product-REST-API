@@ -101,6 +101,9 @@ public class ProductService {
 		}else if(sortId==2){
 			mp.put("sortId","price");
 			mp.put("sortWay","desc");
+		}else{
+			mp.put("sortId","hit_count");
+			mp.put("sortWay","desc");
 		}
 		
 		

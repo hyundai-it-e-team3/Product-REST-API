@@ -26,15 +26,16 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebSecurity
 @Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Resource
-	private DataSource dataSource;
-	
-	
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+		
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {	
 		log.info("configure(HttpSecurity http) 실행");
 		//폼 로그인 비활성화
-		//인증이 안됐을 때 로그인폼을 보여주는 것을 disable한다.
 		http.formLogin().disable();
 		
 		//사이트간 요청 위조 방지 비활성화
@@ -42,28 +43,49 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		//요청 경로 권한 설정
 		http.authorizeRequests()
-			.antMatchers("/board/**").authenticated()
+//			.antMatchers("/backoffice/**").hasAuthority("ROLE_MANAGER")
+//			.antMatchers("/member/**").authenticated() //로그인된(인증된) 모든 사용자 접근 가능
 			.antMatchers("/**").permitAll();
 		
 		//세션 비활성화
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
-		//jwtCheckFilter 추가
+		//JwtCheckFilter 추가(아이디/비밀번보 체크 필터 이전에 있어야 함)
 		JwtCheckFilter jwtCheckFilter = new JwtCheckFilter();
 		http.addFilterBefore(jwtCheckFilter, UsernamePasswordAuthenticationFilter.class);
 		
-		//Cors 설정
+		//CORS 설정 활성화
 		http.cors();
-	}	
+	}
+	
+	@Resource
+	private DataSource dataSource;
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		//return new BCryptPasswordEncoder();
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		log.info("configure(AuthenticationManagerBuilder auth) 실행");
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		//provider.setUserDetailsService(customUserDetailsService);
-		provider.setPasswordEncoder(passwordEncoder());
-		auth.authenticationProvider(provider);
-	}	
+		
+		//DB에서 가져올 사용자 정보 설정
+		auth.jdbcAuthentication()
+			.dataSource(dataSource)
+			.usersByUsernameQuery("SELECT member_id, password, status FROM member WHERE member_id=?")
+			.authoritiesByUsernameQuery("SELECT member_id, member_role FROM member WHERE member_id=?")
+			.passwordEncoder(passwordEncoder()); //default: DelegatingPasswordEncoder
+	}
+	
+	@Bean
+	public RoleHierarchyImpl roleHierarchyImpl() {
+		log.info("실행");
+		RoleHierarchyImpl roleHierarchyImpl = new RoleHierarchyImpl();
+		roleHierarchyImpl.setHierarchy("ROLE_ADMIN > ROLE_MANAGER > ROLE_USER");
+		return roleHierarchyImpl;
+	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -81,39 +103,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}	
 	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
-		//return new BCryptPasswordEncoder();
-		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
-	
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
+	public CorsConfigurationSource corsConfigurationSource() {
+		//모든 요청에서 conf에 설정한대로 확인하겠다는 의미
+		CorsConfiguration conf = new CorsConfiguration();
 		
-		return super.authenticationManagerBean();
-	}
-	
-	@Bean
-	public RoleHierarchyImpl roleHierarchyImpl() {
-		log.info("실행");
-		RoleHierarchyImpl roleHierarchyImpl = new RoleHierarchyImpl();
-		roleHierarchyImpl.setHierarchy("ROLE_ADMIN > ROLE_MANAGER > ROLE_USER");
-		return roleHierarchyImpl;
+		//설정1) 모든 요청 사이트 허용
+		conf.addAllowedOrigin("*");
+		//설정2) 모든 요청 방식 허용: GET, POST, PUT, DELETE ...
+		conf.addAllowedMethod("*");
+		//설정3) 모든 요청 헤더 허용
+		conf.addAllowedHeader("*");
+		
+		//모든 URL 요청에 대해서 위 내용을 적용
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", conf);
+		return source;
 	}
 			
-	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-	      CorsConfiguration conf = new CorsConfiguration();
-	      // 모든 요청 사이트 허용
-	      conf.addAllowedOrigin("*");
-	      // 모든 요청 방식 허용
-	      conf.addAllowedMethod("*");
-	      // 모든 요청 헤더 허용
-	      conf.addAllowedHeader("*");
-	      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	      source.registerCorsConfiguration("/**", conf);
-	      return source;
-	}
 }
  
  

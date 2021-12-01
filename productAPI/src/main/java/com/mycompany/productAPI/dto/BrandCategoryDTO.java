@@ -7,5 +7,6 @@ import lombok.Data;
 @Data
 public class BrandCategoryDTO {
 	private String brandName;
+	private String mainImg;
 	private List<BrandCategoryTempDTO> brandCategoryTempList;
 }

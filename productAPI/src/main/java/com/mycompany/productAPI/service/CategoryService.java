@@ -13,7 +13,11 @@ import com.mycompany.productAPI.dto.BrandCategoryDTO;
 import com.mycompany.productAPI.dto.BrandCategoryTempDTO;
 import com.mycompany.productAPI.dto.CategoryDTO;
 
+import jdk.internal.org.jline.utils.Log;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class CategoryService {
 	
 	
@@ -74,7 +78,7 @@ public class CategoryService {
 		List<BrandCategoryTempDTO> brandMainList = brandDAO.selectMainBrand();
 		List<BrandCategoryTempDTO> brandMiddleList = brandDAO.selectMiddleBrand();
 		List<BrandCategoryTempDTO> brandSubList = brandDAO.selectSubBrand();
-		
+		log.info(brandList.get(0).getMainImg());
 		int idx = 0;
 		brandMiddleList.get(0).setCategoryList(new ArrayList<BrandCategoryTempDTO>());
 		for(int i = 0; i < brandSubList.size(); i++) {

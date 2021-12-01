@@ -41,8 +41,13 @@ public class ProductController {
 	
 	@RequestMapping("/list/{categoryId}/{startRow}/{rowCount}/{sortId}")
 	public List<ProductDTO> getCategoryProductList(@PathVariable("categoryId") String categoryId,@PathVariable("startRow") int startRow,@PathVariable("rowCount") int rowCount,@PathVariable("sortId") int sortId){
+		if(categoryId.equals("null"))
+			categoryId = "";
 		int totalRows = productService.getRowCountByCategory(categoryId);
+		log.info("categoryId "+categoryId);
 		log.info(" "+totalRows);
+		
+		
 		int endRow = startRow+rowCount;
 		if(endRow>totalRows) {
 			endRow = totalRows;
