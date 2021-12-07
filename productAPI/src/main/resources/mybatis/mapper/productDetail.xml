@@ -13,6 +13,12 @@
 		FROM product_detail
 		WHERE product_id = #{productId} 
 	</select>
+	
+	<select id="selectPrice" parameterType="string" resultType="int">
+		SELECT price
+		FROM product_detail a, product b
+		WHERE a.product_id = b.product_id and a.product_detail_id = #{productDetailId}
+	</select>
 </mapper>
 
 

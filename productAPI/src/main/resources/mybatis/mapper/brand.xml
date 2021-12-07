@@ -4,8 +4,15 @@
 <mapper namespace="com.mycompany.productAPI.dao.BrandDAO">
 	<select id="selectAllBrand" resultType="brandCategory">
 		SELECT main_img,brand_name 
-		FROM brand 
+		FROM brand
 		order by brand_name
+	</select>	
+
+	<select id="selectMdPickByBrand" parameterType="string" resultType="product">
+		<![CDATA[
+			select a.*,rownum from (select * from product where product.brand_name=#{brandName} order by product.hit_count) a
+				where rownum<3
+		]]>
 	</select>	
 	
 	<select id="selectMainBrand" resultType="brandCategoryTemp">

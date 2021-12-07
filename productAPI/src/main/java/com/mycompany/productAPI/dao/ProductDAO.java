@@ -18,6 +18,8 @@ public interface ProductDAO {
 	
 	public int selectCountByCategoryId(String categoryId);
 	
+	public int selectCountByText(String text);
+	
 	public int selectAllCount();
 	
 	
@@ -27,8 +29,14 @@ public interface ProductDAO {
 	public List<ProductDTO> selectAllProductList(Map<String, Object> mp);
 	
 	public List<ProductDTO> selectProductListByCategoryId(Map<String, Object> mp);
+	
+	public List<ProductDTO> selectProductListByWish(List<String> list);
 
 	public int updateHitCount(String productId);
+
+	public List<ProductDTO> SelectProductByText(Map<String, Object> mp);
+
+	
 
 
 }

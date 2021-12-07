@@ -58,4 +58,29 @@ public class ProductController {
 		}
 		return list;
 	}
+	
+	@RequestMapping("/list/{idStr}")
+	public List<ProductDTO> getWishProductList(@PathVariable String idStr){
+		log.info(idStr);
+		return productService.getProductListByWish(idStr);
+	}
+	
+	@RequestMapping("/list/text/{text}/{startRow}/{rowCount}/{sortId}")
+	public List<ProductDTO> getProductByText(@PathVariable String text,@PathVariable int startRow,@PathVariable int rowCount,@PathVariable int sortId){
+		if(text.equals("0"))
+			text = "";
+		int totalRows = productService.getRowCountByText(text);
+		
+		int endRow = startRow+rowCount;
+		if(endRow>totalRows) {
+			endRow = totalRows;
+		}
+		
+		return productService.getProductByText(text,startRow,endRow,sortId);
+	}
+	
+	@RequestMapping("/cart/{productDetailId}")
+	public ProductDTO getCartProductDetail(@PathVariable String productDetailId) {
+		return productService.getCartProductDetail(productDetailId); 
+	}
 }

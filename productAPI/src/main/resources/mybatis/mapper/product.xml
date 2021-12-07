@@ -19,6 +19,12 @@
 		WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' 
 	</select>
 	
+	<select id="selectCountByText" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM product 
+		WHERE name LIKE '%'||#{text}||'%' and status = '1' 
+	</select>
+	
 	<select id="selectAllCount" resultType="int">
 		SELECT count(*)
 		FROM product
@@ -54,6 +60,20 @@
 			SELECT * FROM (SELECT rownum rn , c.* from (SELECT *
 			FROM product order by ${sortId} ${sortWay} , product_id) c)d where d.rn>= #{startRow} and d.rn<=#{endRow} 
 		]]>
+	</select>
+	
+	<select id="SelectProductByText" parameterType="map" resultType="product">
+		<![CDATA[
+			SELECT * FROM (SELECT rownum rn , c.* from (SELECT *
+			FROM product where name like '%'||#{text}||'%' order by ${sortId} ${sortWay} , product_id) c)d where d.rn>= #{startRow} and d.rn<=#{endRow} 
+		]]>
+	</select>
+	
+	<select id="selectProductListByWish" parameterType="string" resultType="product">
+		SELECT * FROM product WHERE product_id IN
+		<foreach collection="list" index="index" item="product_id" open="(" close=")" separator=",">
+			#{product_id}
+		</foreach>
 	</select>
 	
 	<update id="updateHitCount" parameterType="string">

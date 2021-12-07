@@ -17,4 +17,5 @@ public class ProductDTO {
 	private String brandName;
 	private String thumbnail;
 	private List<ProductDetailDTO> productDetailList;
+	private ProductDetailDTO productDetail;
 }

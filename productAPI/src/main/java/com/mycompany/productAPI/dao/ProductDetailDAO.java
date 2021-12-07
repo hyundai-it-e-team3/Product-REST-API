@@ -13,4 +13,6 @@ public interface ProductDetailDAO {
 
 	public List<ProductDetailDTO> selectAllByProductId(String productId);
 
+	public int selectPrice(String productDetailId);
+
 }

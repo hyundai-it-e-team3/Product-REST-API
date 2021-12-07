@@ -1,6 +1,7 @@
 package com.mycompany.productAPI.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,5 +113,49 @@ public class ProductService {
 			return productDAO.selectAllProductList(mp);
 		return productDAO.selectProductListByCategoryId(mp);
 	}
+	
+	public List<ProductDTO> getProductListByWish(String idStr) {
+		List<String> list = Arrays.asList(idStr.split(","));
+		log.info(list.toString());
+		return productDAO.selectProductListByWish(list);
+	}
 
+	public List<ProductDTO> getProductByText(String text,int startRow, int endRow, int sortId) {
+		Map<String,Object> mp = new HashMap<>();		
+		mp.put("text",text);
+		mp.put("startRow",startRow);
+		mp.put("endRow",endRow);
+		
+		if(sortId==0) {
+			mp.put("sortId","reg_date");
+			mp.put("sortWay","desc");
+		}else if(sortId==1){
+			mp.put("sortId","price");
+			mp.put("sortWay","asc");
+		}else if(sortId==2){
+			mp.put("sortId","price");
+			mp.put("sortWay","desc");
+		}else{
+			mp.put("sortId","hit_count");
+			mp.put("sortWay","desc");
+		}
+		
+		
+		log.info(text+" "+startRow+" "+endRow+" "+sortId);
+		return productDAO.SelectProductByText(mp);
+	}
+
+	public int getRowCountByText(String text) {
+		return productDAO.selectCountByText(text);
+	}
+
+	public ProductDTO getCartProductDetail(String productDetailId) {
+		String productId = productDetailId.substring(0, productDetailId.length()-3);
+		ProductDTO productDTO = productDAO.selectByProductId(productId);
+		productDTO.setProductDetail(productDetailDAO.selectByProductDetailId(productDetailId));
+		productDTO.getProductDetail().setStockList(stockDAO.selectByProductDetailId(productDTO.getProductDetail().getProductDetailId()));
+		productDTO.getProductDetail().setImgList(productImgDAO.selectByProductDetailId(productDTO.getProductDetail().getProductDetailId()));
+		productDTO.getProductDetail().setWithImgList(productImgDAO.selectByProductDetailId(productDTO.getProductDetail().getWithProduct()));
+		return productDTO;
+	}
 }

@@ -31,5 +31,9 @@ public class ProductDetailService {
 		
 		return productDetailDTO;
 	}
+	
+	public int getPrice(String productDetailId) {
+		return productDetailDAO.selectPrice(productDetailId);
+	}
 
 }

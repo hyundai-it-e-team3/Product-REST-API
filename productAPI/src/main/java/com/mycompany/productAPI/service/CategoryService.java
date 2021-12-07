@@ -78,10 +78,10 @@ public class CategoryService {
 		List<BrandCategoryTempDTO> brandMainList = brandDAO.selectMainBrand();
 		List<BrandCategoryTempDTO> brandMiddleList = brandDAO.selectMiddleBrand();
 		List<BrandCategoryTempDTO> brandSubList = brandDAO.selectSubBrand();
-		log.info(brandList.get(0).getMainImg());
 		int idx = 0;
 		brandMiddleList.get(0).setCategoryList(new ArrayList<BrandCategoryTempDTO>());
 		for(int i = 0; i < brandSubList.size(); i++) {
+			
 			if(!brandMiddleList.get(idx).getCategoryId().equals(brandSubList.get(i).getParentCategoryId())||!brandMiddleList.get(idx).getBrandName().equals(brandSubList.get(i).getBrandName())) {
 				idx++;
 				brandMiddleList.get(idx).setCategoryList(new ArrayList<BrandCategoryTempDTO>());
@@ -116,6 +116,9 @@ public class CategoryService {
 			}
 		}
 
+		for(int i = 0; i < brandList.size(); i++) {
+			brandList.get(i).setMdPickList(brandDAO.selectMdPickByBrand(brandList.get(i).getBrandName()));
+		}
 		return brandList;
 	}
 }
