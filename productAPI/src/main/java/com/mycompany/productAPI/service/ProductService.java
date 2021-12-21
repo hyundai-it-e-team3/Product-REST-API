@@ -75,7 +75,10 @@ public class ProductService {
 			mp.put("sortId","price");
 			mp.put("sortWay","desc");
 		}
-		return productDAO.selectProductListByBrandName(mp);
+		
+		List<ProductDTO> productList = productDAO.selectProductListByBrandName(mp);
+		log.info(productList.toString());
+		return productList;
 	
 	}
 
