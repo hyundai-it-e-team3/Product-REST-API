@@ -13,7 +13,6 @@ import com.mycompany.productAPI.dto.BrandCategoryDTO;
 import com.mycompany.productAPI.dto.BrandCategoryTempDTO;
 import com.mycompany.productAPI.dto.CategoryDTO;
 
-import jdk.internal.org.jline.utils.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

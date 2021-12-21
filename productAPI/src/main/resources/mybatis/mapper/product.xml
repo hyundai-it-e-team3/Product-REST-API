@@ -41,31 +41,31 @@
 	
 	<select id="selectProductListByBrandNameAndCategory" parameterType="map" resultType="product">
 		<![CDATA[
-			SELECT * FROM (SELECT rownum rn , c.* from (SELECT a.*
+			SELECT d.*,rn FROM (SELECT rownum rn , c.* from (SELECT a.*
 			FROM product a , product_category b
-			WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' and brand_name = #{brandName} order by ${sortId} ${sortWay} , a.product_id) c ) d where d.rn>= #{startRow} and d.rn<=#{endRow}
+			WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' and brand_name = #{brandName} order by ${sortId} ${sortWay} , a.product_id) c where rownum <= #{endRow}) d where rn>=#{startRow}
 		]]>
 	</select>
 	
 	<select id="selectProductListByCategoryId" parameterType="map" resultType="product">
 		<![CDATA[
-			SELECT * FROM (SELECT rownum rn , c.* from (SELECT a.*
+			SELECT d.*,rn FROM (SELECT rownum rn , c.* from (SELECT a.*
 			FROM product a , product_category b
-			WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' order by ${sortId} ${sortWay} , a.product_id) c ) d where d.rn>= #{startRow} and d.rn<=#{endRow}
+			WHERE a.product_id = b.product_id and b.category_id LIKE '%'||#{categoryId}||'%' and status = '1' order by ${sortId} ${sortWay} , a.product_id) c  where rownum <= #{endRow}) d where rn>=#{startRow}
 		]]>
 	</select>
 	
 	<select id="selectAllProductList" parameterType="map" resultType="product">
 		<![CDATA[
-			SELECT * FROM (SELECT rownum rn , c.* from (SELECT *
-			FROM product order by ${sortId} ${sortWay} , product_id) c)d where d.rn>= #{startRow} and d.rn<=#{endRow} 
+			SELECT d.*,rn FROM (SELECT rownum rn , c.* from (SELECT *
+			FROM product order by ${sortId} ${sortWay} , product_id) c  where rownum <= #{endRow}) d where rn>=#{startRow} 
 		]]>
 	</select>
 	
 	<select id="SelectProductByText" parameterType="map" resultType="product">
 		<![CDATA[
-			SELECT * FROM (SELECT rownum rn , c.* from (SELECT *
-			FROM product where name like '%'||#{text}||'%' order by ${sortId} ${sortWay} , product_id) c)d where d.rn>= #{startRow} and d.rn<=#{endRow} 
+			SELECT d.*,rn FROM (SELECT rownum rn , c.* from (SELECT *
+			FROM product where name like '%'||#{text}||'%' order by ${sortId} ${sortWay} , product_id) c where rownum <= #{endRow}) d where rn>=#{endRow} 
 		]]>
 	</select>
 	
