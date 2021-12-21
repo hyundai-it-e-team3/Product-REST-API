@@ -142,7 +142,9 @@ public class ProductService {
 		
 		
 		log.info(text+" "+startRow+" "+endRow+" "+sortId);
-		return productDAO.SelectProductByText(mp);
+		List<ProductDTO> tempList = productDAO.SelectProductByText(mp);
+		log.info(tempList.toString());
+		return tempList;
 	}
 
 	public int getRowCountByText(String text) {
@@ -152,10 +154,12 @@ public class ProductService {
 	public ProductDTO getCartProductDetail(String productDetailId) {
 		String productId = productDetailId.substring(0, productDetailId.length()-3);
 		ProductDTO productDTO = productDAO.selectByProductId(productId);
+		productDTO.setProductDetailList(productDetailDAO.selectAllByProductId(productId));
 		productDTO.setProductDetail(productDetailDAO.selectByProductDetailId(productDetailId));
 		productDTO.getProductDetail().setStockList(stockDAO.selectByProductDetailId(productDTO.getProductDetail().getProductDetailId()));
 		productDTO.getProductDetail().setImgList(productImgDAO.selectByProductDetailId(productDTO.getProductDetail().getProductDetailId()));
 		productDTO.getProductDetail().setWithImgList(productImgDAO.selectByProductDetailId(productDTO.getProductDetail().getWithProduct()));
+		log.info(productDTO.toString());
 		return productDTO;
 	}
 }

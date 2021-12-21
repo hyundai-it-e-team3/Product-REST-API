@@ -118,6 +118,7 @@ public class CategoryService {
 
 		for(int i = 0; i < brandList.size(); i++) {
 			brandList.get(i).setMdPickList(brandDAO.selectMdPickByBrand(brandList.get(i).getBrandName()));
+			log.info(brandList.get(i).getMdPickList().toString());
 		}
 		return brandList;
 	}
