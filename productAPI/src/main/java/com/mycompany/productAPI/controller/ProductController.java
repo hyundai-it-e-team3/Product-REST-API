@@ -81,6 +81,7 @@ public class ProductController {
 	
 	@RequestMapping("/cart/{productDetailId}")
 	public ProductDTO getCartProductDetail(@PathVariable String productDetailId) {
-		return productService.getCartProductDetail(productDetailId); 
+		String productId = productDetailId.substring(0, productDetailId.length()-3);
+		return productService.getProduct(productId); 
 	}
 }
