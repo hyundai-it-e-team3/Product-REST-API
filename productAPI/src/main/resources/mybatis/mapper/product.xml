@@ -65,7 +65,7 @@
 	<select id="SelectProductByText" parameterType="map" resultType="product">
 		<![CDATA[
 			SELECT d.*,rn FROM (SELECT rownum rn , c.* from (SELECT *
-			FROM product where name like '%'||#{text}||'%' order by ${sortId} ${sortWay} , product_id) c where rownum <= #{endRow}) d where rn>=#{endRow} 
+			FROM product where name like '%'||#{text}||'%' order by ${sortId} ${sortWay} , product_id) c where rownum <= #{endRow}) d where rn>=#{startRow} 
 		]]>
 	</select>
 	

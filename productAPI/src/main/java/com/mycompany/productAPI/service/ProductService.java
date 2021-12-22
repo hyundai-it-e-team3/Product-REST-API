@@ -74,8 +74,10 @@ public class ProductService {
 		}else if(sortId==2){
 			mp.put("sortId","price");
 			mp.put("sortWay","desc");
-		}
-		
+		}else if(sortId==3) {
+			mp.put("sortId","purchase_amount");
+			mp.put("sortWay","asc");
+		}		
 		List<ProductDTO> productList = productDAO.selectProductListByBrandName(mp);
 		log.info(productList.toString());
 		return productList;

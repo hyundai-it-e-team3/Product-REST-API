@@ -75,8 +75,14 @@ public class ProductController {
 		if(endRow>totalRows) {
 			endRow = totalRows;
 		}
-		
-		return productService.getProductByText(text,startRow,endRow,sortId);
+		log.info(" "+totalRows);
+		List<ProductDTO> list = productService.getProductByText(text,startRow,endRow,sortId);
+		for(int i = 0; i < list.size(); i++) {
+			log.info(list.get(i).getName());
+		}
+		log.info("size: "+list.size());
+		System.out.println("");
+		return list;
 	}
 	
 	@RequestMapping("/cart/{productDetailId}")
